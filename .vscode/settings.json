@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    ".dart_tool": true,
+    ".idea": true,
+    ".vscode": true,
+    ".metadata": true,
+    ".packages": true,
+    "analysis_options.yaml": true,
+    "pubspec.lock": true,
+    "pili_phone.iml": true,
+    ".gitignore": true
+  }
+}
