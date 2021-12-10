@@ -1,10 +1,13 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:pili_phone/automaton/automaton.dart';
 import 'package:pili_phone/pages/phone_page.dart';
 import 'package:pili_phone/pages/wallet/wallet_controller.dart';
+import 'package:pili_phone/utils/ui_utils.dart';
 
 class PhoneController extends GetxController {
   final numberField = TextEditingController();
@@ -48,7 +51,21 @@ class PhoneController extends GetxController {
     }
     final coins = Get.find<WalletController>().coinStack.fold('', (value, coin) => '$value${coin.variable}');
     final res = nfa.evaluate('$r1$r2$coins');
-    callDialog(res ? CallStatus.success : CallStatus.insufficientMoney);
+    if (res) {
+      callDialog(
+        CallStatus.success,
+        Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
+          Text('Marcando a ${numberName.value}', style: Get.textTheme.bodyText1?.copyWith(color: Colors.white), textAlign: TextAlign.center),
+          Lottie.asset('assets/animations/ringing.json', width: 150, height: 150).pb,
+        ]),
+      );
+    } else {
+      callDialog(
+        CallStatus.insufficientMoney,
+        Text('Es necesario tener al menos \$${prices[numberName.value]} para marcar a ${numberName.value}',
+            style: Get.textTheme.bodyText1?.copyWith(color: Colors.white), textAlign: TextAlign.center),
+      );
+    }
   }
 }
 
@@ -65,4 +82,10 @@ const keyboard = <String, String>{
   '*': ',',
   '0': '+',
   '#': ';',
+};
+
+const prices = <String, int>{
+  'GOB': 5,
+  'LOC': 10,
+  'INTER': 12,
 };

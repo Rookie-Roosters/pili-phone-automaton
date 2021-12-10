@@ -135,7 +135,7 @@ class _DialPad extends GetView<PhoneController> {
   }
 }
 
-Future<void> callDialog(CallStatus status) async {
+Future<void> callDialog(CallStatus status, [Widget? extra]) async {
   return Get.dialog(Material(
     color: Colors.transparent,
     child: Container(
@@ -145,12 +145,15 @@ Future<void> callDialog(CallStatus status) async {
       ),
       padding: kPadding,
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
-        Text(status.title, style: Get.textTheme.headline5?.copyWith(color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+        Text(status.title.toUpperCase(),
+            style: Get.textTheme.headline5?.copyWith(color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
         kSpacerY,
-        Text(
-          status.text,
-          style: Get.textTheme.bodyText1?.copyWith(color: Colors.white),
-        ),
+        if (status.text.isNotEmpty)
+          Text(
+            status.text,
+            style: Get.textTheme.bodyText1?.copyWith(color: Colors.white),
+          ),
+        if (extra != null) extra.pt
       ]),
     ),
   ).p4.centered());
@@ -166,11 +169,11 @@ extension CallStatusExtension on CallStatus {
   String get title {
     switch (this) {
       case CallStatus.insufficientMoney:
-        return 'Dinero insuficiente';
+        return 'Saldo insuficiente';
       case CallStatus.wrongNumber:
         return 'Número incorrecto';
       case CallStatus.success:
-        return 'Realizando llamada...';
+        return 'Conectando llamada...';
     }
   }
 
@@ -181,7 +184,7 @@ extension CallStatusExtension on CallStatus {
       case CallStatus.wrongNumber:
         return 'Intenta con alguno de los siguientes: INTER, GOB, LOC';
       case CallStatus.success:
-        return '* llamada *';
+        return '';
     }
   }
 }
