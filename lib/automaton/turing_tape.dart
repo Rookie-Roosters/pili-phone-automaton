@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'transition.dart';
 
 class TuringTape {
@@ -8,12 +6,6 @@ class TuringTape {
   int _offset = 0;
   int get _logicalHead => head - _offset;
   String get headSymbol => tape[_logicalHead];
-
-  TuringTape._({
-    required this.tape,
-    required this.head,
-    required int offset,
-  }) : _offset = offset;
 
   TuringTape({
     required this.tape,
@@ -43,6 +35,11 @@ class TuringTape {
     }
   }
 
+  TuringTape._({
+    required this.tape,
+    required this.head,
+    required int offset,
+  }) : _offset = offset;
   TuringTape copyWith({
     List<String>? tape,
     int? head,
