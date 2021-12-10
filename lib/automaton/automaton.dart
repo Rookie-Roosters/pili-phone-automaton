@@ -46,10 +46,12 @@ class Automaton {
   }
 
   bool evaluate(String input) {
+    final initial = states.singleWhere((element) => element.isInitial);
     if (type == 'turing') {
       final tape = TuringTape(head: 0, tape: input.split(''));
-      final initial = states.singleWhere((element) => element.isInitial);
       return _turing(tape, initial);
+    } else if (type == 'fa') {
+      return _nfa(input, 0, initial);
     }
     return false;
   }
@@ -59,8 +61,24 @@ class Automaton {
     final _transitions = transitions.where((element) => element.from == state.id && element.read == tape.headSymbol).toList();
     for (final transition in _transitions) {
       final tapeCopy = tape.copyWith()..write(transition);
-      final stateCopy = states.singleWhere((element) => element.id == transition.to);
-      final res = _turing(tapeCopy, stateCopy);
+      final toState = states.singleWhere((element) => element.id == transition.to);
+      final res = _turing(tapeCopy, toState);
+      if (res) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool _nfa(String input, int index, State state) {
+    if (index == input.length) {
+      return state.isFinal;
+    }
+    final symbol = input.split('')[index];
+    final _transitions = transitions.where((element) => element.from == state.id && element.read == symbol).toList();
+    for (final transition in _transitions) {
+      final toState = states.singleWhere((element) => element.id == transition.to);
+      final res = _nfa(input, index + 1, toState);
       if (res) {
         return true;
       }

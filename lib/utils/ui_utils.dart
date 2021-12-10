@@ -11,7 +11,7 @@ const kSpacing3 = kSpacing * 1.0;
 const kSpacing4 = kSpacing * 1.5;
 const kSpacing5 = kSpacing * 3.0;
 
-const kBorderRadius = 12.0;
+const kBorderRadius = 24.0;
 const kRoundedBorder = BorderRadius.all(Radius.circular(kBorderRadius));
 const kPillBorder = BorderRadius.all(Radius.circular(kBorderRadius));
 const kBouncyScroll = BouncingScrollPhysics();
@@ -186,22 +186,26 @@ extension WidgetUtils on Widget {
     );
   }
 
-  Widget left(List<Widget> items, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center}) {
+  Widget left(List<Widget> items,
+      {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center}) {
     if (items.isEmpty) return this;
     return Row(mainAxisAlignment: mainAxisAlignment, crossAxisAlignment: crossAxisAlignment, mainAxisSize: MainAxisSize.min, children: [...items, this]);
   }
 
-  Widget right(List<Widget> items, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center}) {
+  Widget right(List<Widget> items,
+      {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center}) {
     if (items.isEmpty) return this;
     return Row(mainAxisAlignment: mainAxisAlignment, crossAxisAlignment: crossAxisAlignment, mainAxisSize: MainAxisSize.min, children: [this, ...items]);
   }
 
-  Widget top(List<Widget> items, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start}) {
+  Widget top(List<Widget> items,
+      {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start}) {
     if (items.isEmpty) return this;
     return Column(mainAxisAlignment: mainAxisAlignment, crossAxisAlignment: crossAxisAlignment, mainAxisSize: MainAxisSize.min, children: [...items, this]);
   }
 
-  Widget bottom(List<Widget> items, {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start}) {
+  Widget bottom(List<Widget> items,
+      {MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start, CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start}) {
     if (items.isEmpty) return this;
     return Column(mainAxisAlignment: mainAxisAlignment, crossAxisAlignment: crossAxisAlignment, mainAxisSize: MainAxisSize.min, children: [this, ...items]);
   }
@@ -209,6 +213,20 @@ extension WidgetUtils on Widget {
   Widget focusGroup() => FocusTraversalGroup(policy: OrderedTraversalPolicy(), child: this);
 
   Widget focusOrder(double order) => FocusTraversalOrder(order: NumericFocusOrder(order), child: this);
+
+  AnnotatedRegion<SystemUiOverlayStyle> overlayStyle({Color? statusBar, Color? navigationBar}) {
+    final statusBrightness = statusBar != null ? ThemeData.estimateBrightnessForColor(statusBar) : null;
+    final navigationBrightness = navigationBar != null ? ThemeData.estimateBrightnessForColor(navigationBar) : null;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: navigationBar,
+        statusBarColor: statusBar,
+        statusBarIconBrightness: statusBrightness?.opposite,
+        systemNavigationBarIconBrightness: navigationBrightness?.opposite,
+      ),
+      child: this,
+    );
+  }
 }
 
 const _sizes = [0.0, kSpacing1, kSpacing2, kSpacing3, kSpacing4, kSpacing5];
