@@ -8,6 +8,7 @@
     "analysis_options.yaml": true,
     "pubspec.lock": true,
     "pili_phone.iml": true,
-    ".gitignore": true
+    ".gitignore": true,
+    "build": true
   }
 }

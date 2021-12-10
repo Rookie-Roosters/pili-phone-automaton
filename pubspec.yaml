@@ -33,6 +33,7 @@ dependencies:
   get: ^4.5.1
   logger: ^1.1.0
   line_icons: ^2.0.1
+  xml: ^5.3.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,6 +64,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/machines/
 
   fonts:
     - family: Poppins
